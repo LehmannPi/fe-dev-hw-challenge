@@ -13,6 +13,8 @@ import {
   SelectValue,
 } from '../ui/select';
 
+import { toast } from 'sonner';
+
 type Props = {
   lead: Lead | null;
   onClose: () => void;
@@ -42,10 +44,20 @@ export default function LeadDetailDrawer({
     // Basic email validation
     const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!validEmail.test(email)) {
-      alert('Invalid email format');
+      toast.error('Invalid email format');
       return;
     }
     onSave({ ...lead, email, status });
+    onClose();
+  };
+
+  const handleConvert = () => {
+    const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!validEmail.test(email)) {
+      toast.error('Invalid email format');
+      return;
+    }
+    onConvert(lead);
     onClose();
   };
 
@@ -130,7 +142,7 @@ export default function LeadDetailDrawer({
               <Button
                 className="cursor-pointer"
                 variant={'default'}
-                onClick={() => onConvert(lead)}
+                onClick={handleConvert}
               >
                 Convert
               </Button>
